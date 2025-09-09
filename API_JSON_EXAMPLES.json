@@ -1,0 +1,526 @@
+{
+  "description": "JSON примеры для тестирования API Qydyr Entity",
+  "version": "1.0.0",
+  "last_updated": "2024-09-08",
+  
+  "authentication": {
+    "register_admin": {
+      "method": "POST",
+      "endpoint": "/api/auth/register",
+      "description": "Регистрация администратора",
+      "request": {
+        "firstName": "Админ",
+        "lastName": "Системы",
+        "email": "admin@example.com",
+        "password": "admin123",
+        "role": "ADMIN"
+      },
+      "response": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+        "user": {
+          "id": 1,
+          "firstName": "Админ",
+          "lastName": "Системы",
+          "email": "admin@example.com",
+          "role": "ADMIN"
+        }
+      }
+    },
+    "register_manager": {
+      "method": "POST",
+      "endpoint": "/api/auth/register",
+      "description": "Регистрация менеджера",
+      "request": {
+        "firstName": "Менеджер",
+        "lastName": "Событий",
+        "email": "manager@example.com",
+        "password": "manager123",
+        "role": "MANAGER"
+      }
+    },
+    "register_user": {
+      "method": "POST",
+      "endpoint": "/api/auth/register",
+      "description": "Регистрация обычного пользователя",
+      "request": {
+        "firstName": "Айдар",
+        "lastName": "Куаныш",
+        "email": "aidar@example.com",
+        "password": "password123",
+        "role": "USER"
+      }
+    },
+    "login": {
+      "method": "POST",
+      "endpoint": "/api/auth/login",
+      "description": "Вход в систему",
+      "request": {
+        "email": "admin@example.com",
+        "password": "admin123"
+      },
+      "response": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+        "user": {
+          "id": 1,
+          "firstName": "Админ",
+          "lastName": "Системы",
+          "email": "admin@example.com",
+          "role": "ADMIN"
+        }
+      }
+    }
+  },
+
+  "users": {
+    "get_all_users": {
+      "method": "GET",
+      "endpoint": "/api/users",
+      "description": "Получить всех пользователей",
+      "headers": {
+        "Authorization": "Bearer YOUR_JWT_TOKEN"
+      },
+      "response": [
+        {
+          "id": 1,
+          "firstName": "Админ",
+          "lastName": "Системы",
+          "email": "admin@example.com",
+          "role": "ADMIN",
+          "cash": "100000"
+        },
+        {
+          "id": 2,
+          "firstName": "Айдар",
+          "lastName": "Куаныш",
+          "email": "aidar@example.com",
+          "role": "USER",
+          "cash": "25000"
+        }
+      ]
+    },
+    "get_user_by_id": {
+      "method": "GET",
+      "endpoint": "/api/users/1",
+      "description": "Получить пользователя по ID",
+      "headers": {
+        "Authorization": "Bearer YOUR_JWT_TOKEN"
+      },
+      "response": {
+        "id": 1,
+        "firstName": "Админ",
+        "lastName": "Системы",
+        "email": "admin@example.com",
+        "role": "ADMIN",
+        "cash": "100000"
+      }
+    },
+    "update_user": {
+      "method": "PUT",
+      "endpoint": "/api/users/1",
+      "description": "Обновить пользователя",
+      "headers": {
+        "Authorization": "Bearer YOUR_JWT_TOKEN",
+        "Content-Type": "application/json"
+      },
+      "request": {
+        "firstName": "Админ",
+        "lastName": "Системы",
+        "email": "admin.updated@example.com"
+      }
+    }
+  },
+
+  "afisha": {
+    "get_all_afisha": {
+      "method": "GET",
+      "endpoint": "/api/afisha",
+      "description": "Получить все афиши",
+      "headers": {
+        "Authorization": "Bearer YOUR_JWT_TOKEN"
+      },
+      "query_params": {
+        "page": 0,
+        "size": 10,
+        "sort": "eventDateTimeFrom,asc"
+      },
+      "response": [
+        {
+          "id": 1,
+          "name": "Концерт группы U2",
+          "addressName": "Алматы Арена",
+          "addressLink": "https://maps.google.com/?q=Алматы+Арена",
+          "eventDateTimeFrom": "2024-12-31T19:00:00",
+          "eventDateTimeTo": "2024-12-31T22:00:00",
+          "phone": "+7 777 123 4567",
+          "description": "Легендарная ирландская рок-группа U2 в Алматы!",
+          "price": 15000,
+          "status": "ACTIVE",
+          "category": "CONCERT",
+          "address": {
+            "street": "Проспект Абая",
+            "city": "Алматы",
+            "country": "Казахстан"
+          }
+        }
+      ]
+    },
+    "get_afisha_by_id": {
+      "method": "GET",
+      "endpoint": "/api/afisha/1",
+      "description": "Получить афишу по ID",
+      "headers": {
+        "Authorization": "Bearer YOUR_JWT_TOKEN"
+      }
+    },
+    "create_afisha": {
+      "method": "POST",
+      "endpoint": "/api/afisha",
+      "description": "Создать афишу",
+      "headers": {
+        "Authorization": "Bearer YOUR_JWT_TOKEN",
+        "Content-Type": "application/json"
+      },
+      "request": {
+        "name": "Концерт группы U2",
+        "addressName": "Алматы Арена",
+        "addressLink": "https://maps.google.com/?q=Алматы+Арена",
+        "eventDateTimeFrom": "2024-12-31T19:00:00",
+        "eventDateTimeTo": "2024-12-31T22:00:00",
+        "phone": "+7 777 123 4567",
+        "description": "Легендарная ирландская рок-группа U2 в Алматы! Невероятное шоу с лучшими хитами всех времен.",
+        "price": 15000,
+        "status": "ACTIVE",
+        "category": "CONCERT",
+        "address": {
+          "street": "Проспект Абая",
+          "city": "Алматы",
+          "country": "Казахстан"
+        }
+      },
+      "response": {
+        "id": 1,
+        "name": "Концерт группы U2",
+        "addressName": "Алматы Арена",
+        "price": 15000,
+        "status": "ACTIVE",
+        "category": "CONCERT"
+      }
+    },
+    "update_afisha": {
+      "method": "PUT",
+      "endpoint": "/api/afisha/1",
+      "description": "Обновить афишу",
+      "headers": {
+        "Authorization": "Bearer YOUR_JWT_TOKEN",
+        "Content-Type": "application/json"
+      },
+      "request": {
+        "name": "Концерт группы U2 - Обновленное название",
+        "price": 18000,
+        "description": "Обновленное описание концерта"
+      }
+    },
+    "delete_afisha": {
+      "method": "DELETE",
+      "endpoint": "/api/afisha/1",
+      "description": "Удалить афишу",
+      "headers": {
+        "Authorization": "Bearer YOUR_JWT_TOKEN"
+      }
+    }
+  },
+
+  "places": {
+    "get_all_places": {
+      "method": "GET",
+      "endpoint": "/api/places",
+      "description": "Получить все места",
+      "headers": {
+        "Authorization": "Bearer YOUR_JWT_TOKEN"
+      },
+      "response": [
+        {
+          "id": 1,
+          "name": "Алматы Арена",
+          "streetName": "Проспект Абая",
+          "streetNumber": "44",
+          "placeLink": "https://maps.google.com/?q=Алматы+Арена",
+          "description": "Современный многофункциональный комплекс",
+          "priceFrom": 5000,
+          "priceTo": 50000,
+          "socialNetwork": "@almaty_arena",
+          "phone": "+7 727 123 4567",
+          "status": "ACTIVE",
+          "category": "CONCERT_HALL",
+          "address": {
+            "street": "Проспект Абая",
+            "city": "Алматы",
+            "country": "Казахстан"
+          }
+        }
+      ]
+    },
+    "create_place": {
+      "method": "POST",
+      "endpoint": "/api/places",
+      "description": "Создать место",
+      "headers": {
+        "Authorization": "Bearer YOUR_JWT_TOKEN",
+        "Content-Type": "application/json"
+      },
+      "request": {
+        "name": "Алматы Арена",
+        "streetName": "Проспект Абая",
+        "streetNumber": "44",
+        "placeLink": "https://maps.google.com/?q=Алматы+Арена",
+        "description": "Современный многофункциональный комплекс для проведения концертов и спортивных мероприятий. Вместимость до 15,000 человек.",
+        "priceFrom": 5000,
+        "priceTo": 50000,
+        "socialNetwork": "@almaty_arena",
+        "phone": "+7 727 123 4567",
+        "street": "Проспект Абая",
+        "city": "Алматы",
+        "country": "Казахстан",
+        "status": "ACTIVE",
+        "category": "CONCERT_HALL",
+        "geoProcessed": false
+      }
+    },
+    "update_place": {
+      "method": "PUT",
+      "endpoint": "/api/places/1",
+      "description": "Обновить место",
+      "headers": {
+        "Authorization": "Bearer YOUR_JWT_TOKEN",
+        "Content-Type": "application/json"
+      },
+      "request": {
+        "name": "Алматы Арена - Обновленное название",
+        "priceFrom": 6000,
+        "priceTo": 55000,
+        "description": "Обновленное описание места"
+      }
+    }
+  },
+
+  "favourites": {
+    "get_favourite_afisha": {
+      "method": "GET",
+      "endpoint": "/api/favourites/afisha",
+      "description": "Получить избранные афиши",
+      "headers": {
+        "Authorization": "Bearer YOUR_JWT_TOKEN"
+      },
+      "response": [
+        {
+          "id": 1,
+          "afisha": {
+            "id": 1,
+            "name": "Концерт группы U2",
+            "price": 15000,
+            "eventDateTimeFrom": "2024-12-31T19:00:00"
+          }
+        }
+      ]
+    },
+    "add_favourite_afisha": {
+      "method": "POST",
+      "endpoint": "/api/favourites/afisha",
+      "description": "Добавить афишу в избранное",
+      "headers": {
+        "Authorization": "Bearer YOUR_JWT_TOKEN",
+        "Content-Type": "application/json"
+      },
+      "request": {
+        "afishaId": 1
+      }
+    },
+    "remove_favourite_afisha": {
+      "method": "DELETE",
+      "endpoint": "/api/favourites/afisha/1",
+      "description": "Удалить афишу из избранного",
+      "headers": {
+        "Authorization": "Bearer YOUR_JWT_TOKEN"
+      }
+    },
+    "get_favourite_places": {
+      "method": "GET",
+      "endpoint": "/api/favourites/places",
+      "description": "Получить избранные места",
+      "headers": {
+        "Authorization": "Bearer YOUR_JWT_TOKEN"
+      }
+    },
+    "add_favourite_place": {
+      "method": "POST",
+      "endpoint": "/api/favourites/places",
+      "description": "Добавить место в избранное",
+      "headers": {
+        "Authorization": "Bearer YOUR_JWT_TOKEN",
+        "Content-Type": "application/json"
+      },
+      "request": {
+        "placeId": 1
+      }
+    }
+  },
+
+  "payments": {
+    "buy_afisha": {
+      "method": "POST",
+      "endpoint": "/api/payment/buy-afisha",
+      "description": "Покупка билета",
+      "headers": {
+        "Authorization": "Bearer YOUR_JWT_TOKEN",
+        "Content-Type": "application/json"
+      },
+      "request": {
+        "userId": 1,
+        "afishaId": 1
+      },
+      "response": {
+        "message": "Уважаемый Айдар Билет успешно приобретен на посешение Концерт группы U2",
+        "orderId": 1,
+        "remainingCash": 35000
+      }
+    }
+  },
+
+  "email": {
+    "send_email": {
+      "method": "POST",
+      "endpoint": "/api/email/send",
+      "description": "Отправить email",
+      "headers": {
+        "Authorization": "Bearer YOUR_JWT_TOKEN",
+        "Content-Type": "application/json"
+      },
+      "request": {
+        "to": "user@example.com",
+        "subject": "Добро пожаловать в Qydyr!",
+        "body": "Спасибо за регистрацию в нашей системе управления событиями!"
+      }
+    }
+  },
+
+  "images": {
+    "upload_image": {
+      "method": "POST",
+      "endpoint": "/api/images/upload",
+      "description": "Загрузить изображение",
+      "headers": {
+        "Authorization": "Bearer YOUR_JWT_TOKEN"
+      },
+      "request_type": "multipart/form-data",
+      "request": {
+        "file": "[выбранный файл изображения]"
+      },
+      "response": {
+        "id": 1,
+        "name": "image.jpg",
+        "originalFileName": "photo.jpg",
+        "contentType": "image/jpeg",
+        "size": 1024000,
+        "previewImage": true
+      }
+    },
+    "get_image": {
+      "method": "GET",
+      "endpoint": "/api/images/1",
+      "description": "Получить изображение",
+      "headers": {
+        "Authorization": "Bearer YOUR_JWT_TOKEN"
+      }
+    }
+  },
+
+  "error_responses": {
+    "unauthorized": {
+      "status": 401,
+      "error": "Unauthorized",
+      "message": "JWT token is missing or invalid",
+      "path": "/api/afisha",
+      "timestamp": "2024-09-08T13:46:32.442+00:00"
+    },
+    "forbidden": {
+      "status": 403,
+      "error": "Forbidden",
+      "message": "Access denied",
+      "path": "/admin",
+      "timestamp": "2024-09-08T17:22:28.041+00:00"
+    },
+    "not_found": {
+      "status": 404,
+      "error": "Not Found",
+      "message": "User not found with ID: 999",
+      "path": "/api/users/999",
+      "timestamp": "2024-09-08T13:46:32.442+00:00"
+    },
+    "bad_request": {
+      "status": 400,
+      "error": "Bad Request",
+      "message": "User does not have enough cash to buy the Afisha",
+      "path": "/api/payment/buy-afisha",
+      "timestamp": "2024-09-08T13:46:32.442+00:00"
+    },
+    "validation_error": {
+      "status": 400,
+      "error": "Bad Request",
+      "message": "Validation failed",
+      "path": "/api/auth/register",
+      "timestamp": "2024-09-08T13:46:32.442+00:00",
+      "errors": [
+        {
+          "field": "email",
+          "message": "Email is required"
+        },
+        {
+          "field": "password",
+          "message": "Password must be at least 6 characters"
+        }
+      ]
+    }
+  },
+
+  "enums": {
+    "roles": ["USER", "ADMIN", "MANAGER"],
+    "statuses": ["ACTIVE", "INACTIVE", "CANCELLED", "PURCHASED", "PAID", "PAYMENT_EXPECTED", "PAYMENT_IS_OVERDUE", "REFUND"],
+    "event_categories": ["CONCERT", "THEATRE", "CINEMA", "MARATHON", "SEMINAR"],
+    "place_categories": ["CONCERT_HALL", "THEATER_HALL", "STADIUM", "EXHIBITION_CENTER", "CONFERENCE_HALL", "PARK", "CINEMA"]
+  },
+
+  "curl_examples": {
+    "register_admin": "curl -X POST http://localhost:8080/api/auth/register -H 'Content-Type: application/json' -d '{\"firstName\":\"Админ\",\"lastName\":\"Системы\",\"email\":\"admin@example.com\",\"password\":\"admin123\",\"role\":\"ADMIN\"}'",
+    "login": "curl -X POST http://localhost:8080/api/auth/login -H 'Content-Type: application/json' -d '{\"email\":\"admin@example.com\",\"password\":\"admin123\"}'",
+    "get_afisha": "curl -X GET http://localhost:8080/api/afisha -H 'Authorization: Bearer YOUR_JWT_TOKEN'",
+    "create_afisha": "curl -X POST http://localhost:8080/api/afisha -H 'Content-Type: application/json' -H 'Authorization: Bearer YOUR_JWT_TOKEN' -d '{\"name\":\"Тестовый концерт\",\"addressName\":\"Тестовый зал\",\"eventDateTimeFrom\":\"2024-12-31T19:00:00\",\"eventDateTimeTo\":\"2024-12-31T22:00:00\",\"phone\":\"+7 777 777 7777\",\"description\":\"Тестовое описание\",\"price\":1000,\"status\":\"ACTIVE\",\"category\":\"CONCERT\"}'",
+    "buy_ticket": "curl -X POST http://localhost:8080/api/payment/buy-afisha -H 'Content-Type: application/json' -H 'Authorization: Bearer YOUR_JWT_TOKEN' -d '{\"userId\":1,\"afishaId\":1}'"
+  },
+
+  "testing_scenarios": {
+    "full_user_journey": [
+      "1. Регистрация пользователя",
+      "2. Вход в систему",
+      "3. Просмотр афиш",
+      "4. Добавление афиши в избранное",
+      "5. Покупка билета",
+      "6. Просмотр заказов",
+      "7. Обновление профиля"
+    ],
+    "admin_workflow": [
+      "1. Регистрация администратора",
+      "2. Вход в админ-панель",
+      "3. Создание места проведения",
+      "4. Создание афиши",
+      "5. Просмотр пользователей",
+      "6. Управление заказами"
+    ],
+    "api_testing": [
+      "1. Тестирование аутентификации",
+      "2. Тестирование CRUD операций",
+      "3. Тестирование валидации",
+      "4. Тестирование ошибок",
+      "5. Тестирование безопасности"
+    ]
+  }
+}

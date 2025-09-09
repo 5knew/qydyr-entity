@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль - Qydyr Entity</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container py-5">
+            <!-- Header -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 class="display-5 fw-bold mb-2">
+                        <i class="fas fa-user-circle text-primary me-3"></i>Мой профиль
+                    </h1>
+                    <p class="text-muted">Управление личной информацией и настройками</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Profile Info -->
+                <div class="col-lg-4 mb-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <div class="mb-3">
+                                <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center" 
+                                     style="width: 100px; height: 100px;">
+                                    <i class="fas fa-user text-white" style="font-size: 2.5rem;"></i>
+                                </div>
+                            </div>
+                            <h4 class="card-title" th:text="${user.firstName + ' ' + user.lastName}">Имя Фамилия</h4>
+                            <p class="text-muted" th:text="${user.email}">email@example.com</p>
+                            <span class="badge bg-primary" th:text="${user.role}">Роль</span>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="card border-0 shadow-sm mt-3">
+                        <div class="card-body">
+                            <h6 class="card-title">Статистика</h6>
+                            <div class="row text-center">
+                                <div class="col-6">
+                                    <div class="border-end">
+                                        <h5 class="text-primary mb-1" th:text="${userStats != null ? userStats.totalOrders : 0}">0</h5>
+                                        <small class="text-muted">Заказов</small>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <h5 class="text-success mb-1" th:text="${userStats != null ? userStats.totalSpent : 0}">0</h5>
+                                    <small class="text-muted">Потрачено</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Content -->
+                <div class="col-lg-8">
+                    <!-- Tabs -->
+                    <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" 
+                                    id="info-tab" 
+                                    data-bs-toggle="tab" 
+                                    data-bs-target="#info" 
+                                    type="button" 
+                                    role="tab">
+                                <i class="fas fa-user me-2"></i>Личная информация
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" 
+                                    id="security-tab" 
+                                    data-bs-toggle="tab" 
+                                    data-bs-target="#security" 
+                                    type="button" 
+                                    role="tab">
+                                <i class="fas fa-lock me-2"></i>Безопасность
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" 
+                                    id="notifications-tab" 
+                                    data-bs-toggle="tab" 
+                                    data-bs-target="#notifications" 
+                                    type="button" 
+                                    role="tab">
+                                <i class="fas fa-bell me-2"></i>Уведомления
+                            </button>
+                        </li>
+                    </ul>
+
+                    <!-- Tab Content -->
+                    <div class="tab-content" id="profileTabsContent">
+                        <!-- Personal Info Tab -->
+                        <div class="tab-pane fade show active" id="info" role="tabpanel">
+                            <div class="card border-0 shadow-sm mt-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Редактировать профиль</h5>
+                                    
+                                    <!-- Success Message -->
+                                    <div th:if="${message}" class="alert alert-success" role="alert">
+                                        <i class="fas fa-check-circle me-2"></i>
+                                        <span th:text="${message}">Сообщение</span>
+                                    </div>
+
+                                    <form th:action="@{/profile/update}" method="post" th:object="${userUpdateRequest}">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label for="firstName" class="form-label">Имя</label>
+                                                    <input type="text" 
+                                                           class="form-control" 
+                                                           id="firstName" 
+                                                           th:field="*{firstName}"
+                                                           th:value="${user.firstName}"
+                                                           required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label for="lastName" class="form-label">Фамилия</label>
+                                                    <input type="text" 
+                                                           class="form-control" 
+                                                           id="lastName" 
+                                                           th:field="*{lastName}"
+                                                           th:value="${user.lastName}"
+                                                           required>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">Email</label>
+                                            <input type="email" 
+                                                   class="form-control" 
+                                                   id="email" 
+                                                   th:field="*{email}"
+                                                   th:value="${user.email}"
+                                                   required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="phone" class="form-label">Телефон</label>
+                                            <input type="tel" 
+                                                   class="form-control" 
+                                                   id="phone" 
+                                                   th:field="*{phone}"
+                                                   th:value="${user.phone}"
+                                                   placeholder="+7 (xxx) xxx-xx-xx">
+                                        </div>
+
+                                        <div class="d-grid">
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fas fa-save me-2"></i>Сохранить изменения
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Security Tab -->
+                        <div class="tab-pane fade" id="security" role="tabpanel">
+                            <div class="card border-0 shadow-sm mt-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Изменить пароль</h5>
+                                    
+                                    <!-- Error Message -->
+                                    <div th:if="${error}" class="alert alert-danger" role="alert">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        <span th:text="${error}">Ошибка</span>
+                                    </div>
+
+                                    <form th:action="@{/profile/change-password}" method="post">
+                                        <div class="mb-3">
+                                            <label for="currentPassword" class="form-label">Текущий пароль</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-lock"></i>
+                                                </span>
+                                                <input type="password" 
+                                                       class="form-control" 
+                                                       id="currentPassword" 
+                                                       name="currentPassword"
+                                                       required>
+                                                <button class="btn btn-outline-secondary" type="button" id="toggleCurrentPassword">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="newPassword" class="form-label">Новый пароль</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-lock"></i>
+                                                </span>
+                                                <input type="password" 
+                                                       class="form-control" 
+                                                       id="newPassword" 
+                                                       name="newPassword"
+                                                       required>
+                                                <button class="btn btn-outline-secondary" type="button" id="toggleNewPassword">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </div>
+                                            <div class="form-text">
+                                                Пароль должен содержать минимум 8 символов
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="confirmPassword" class="form-label">Подтвердите новый пароль</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-lock"></i>
+                                                </span>
+                                                <input type="password" 
+                                                       class="form-control" 
+                                                       id="confirmPassword" 
+                                                       name="confirmPassword"
+                                                       required>
+                                                <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </div>
+                                            <div id="passwordMatch" class="form-text"></div>
+                                        </div>
+
+                                        <div class="d-grid">
+                                            <button type="submit" class="btn btn-warning">
+                                                <i class="fas fa-key me-2"></i>Изменить пароль
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Notifications Tab -->
+                        <div class="tab-pane fade" id="notifications" role="tabpanel">
+                            <div class="card border-0 shadow-sm mt-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Настройки уведомлений</h5>
+                                    
+                                    <form th:action="@{/profile/notifications}" method="post">
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input" type="checkbox" id="emailNotifications" name="emailNotifications" checked>
+                                            <label class="form-check-label" for="emailNotifications">
+                                                Email уведомления
+                                            </label>
+                                        </div>
+
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input" type="checkbox" id="newEvents" name="newEvents" checked>
+                                            <label class="form-check-label" for="newEvents">
+                                                Уведомления о новых событиях
+                                            </label>
+                                        </div>
+
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input" type="checkbox" id="orderUpdates" name="orderUpdates" checked>
+                                            <label class="form-check-label" for="orderUpdates">
+                                                Обновления заказов
+                                            </label>
+                                        </div>
+
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input" type="checkbox" id="marketing" name="marketing">
+                                            <label class="form-check-label" for="marketing">
+                                                Маркетинговые уведомления
+                                            </label>
+                                        </div>
+
+                                        <div class="d-grid">
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fas fa-save me-2"></i>Сохранить настройки
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-calendar-alt me-2"></i>Qydyr Entity</h5>
+                    <p class="mb-0">Система управления событиями и местами проведения мероприятий</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">&copy; 2024 Qydyr Entity. Все права защищены.</p>
+                    <div class="mt-2">
+                        <a href="#" class="text-light me-3"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script th:src="@{/js/main.js}"></script>
+    <script src="/js/main.js"></script>
+    
+    <script>
+        // Password visibility toggles
+        function togglePasswordVisibility(inputId, buttonId) {
+            const password = document.getElementById(inputId);
+            const button = document.getElementById(buttonId);
+            const icon = button.querySelector('i');
+            
+            if (password.type === 'password') {
+                password.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                password.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        document.getElementById('toggleCurrentPassword').addEventListener('click', function() {
+            togglePasswordVisibility('currentPassword', 'toggleCurrentPassword');
+        });
+
+        document.getElementById('toggleNewPassword').addEventListener('click', function() {
+            togglePasswordVisibility('newPassword', 'toggleNewPassword');
+        });
+
+        document.getElementById('toggleConfirmPassword').addEventListener('click', function() {
+            togglePasswordVisibility('confirmPassword', 'toggleConfirmPassword');
+        });
+
+        // Password match validation
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = this.value;
+            const matchDiv = document.getElementById('passwordMatch');
+            
+            if (confirmPassword === '') {
+                matchDiv.textContent = '';
+                matchDiv.className = 'form-text';
+            } else if (newPassword === confirmPassword) {
+                matchDiv.textContent = 'Пароли совпадают';
+                matchDiv.className = 'form-text text-success';
+            } else {
+                matchDiv.textContent = 'Пароли не совпадают';
+                matchDiv.className = 'form-text text-danger';
+            }
+        });
+    </script>
+</body>
+</html>

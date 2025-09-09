@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${afisha.id != null ? 'Редактирование афиши' : 'Создание афиши'}">Форма афиши - Админ-панель</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <div th:replace="fragments/admin-navbar :: admin-navbar"></div>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <!-- Page Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="h3 mb-0">
+                            <i class="fas fa-calendar-alt me-2"></i>
+                            <span th:text="${afisha.id != null ? 'Редактирование афиши' : 'Создание афиши'}">Форма афиши</span>
+                        </h1>
+                        <p class="text-muted">Заполните форму для создания или редактирования афиши</p>
+                    </div>
+                    <a href="/admin/afisha" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Назад к списку
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alerts -->
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+        <!-- Form -->
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-edit me-2"></i>Информация об афише
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/admin/afisha/save}" th:object="${afisha}" method="post">
+                            <input type="hidden" th:field="*{id}">
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="name" class="form-label">Название <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="name" th:field="*{name}" required>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="addressName" class="form-label">Место проведения <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="addressName" th:field="*{addressName}" required>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('addressName')}" th:errors="*{addressName}"></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Описание <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="description" th:field="*{description}" rows="4" required></textarea>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="eventDateTimeFrom" class="form-label">Дата и время <span class="text-danger">*</span></label>
+                                    <input type="datetime-local" class="form-control" id="eventDateTimeFrom" th:field="*{eventDateTimeFrom}" required>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('eventDateTimeFrom')}" th:errors="*{eventDateTimeFrom}"></div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="price" class="form-label">Цена (тенге)</label>
+                                    <input type="number" class="form-control" id="price" th:field="*{price}" min="0" step="0.01">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="category" class="form-label">Категория <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="category" th:field="*{category}" required>
+                                        <option value="">Выберите категорию</option>
+                                        <option value="CONCERT">Концерт</option>
+                                        <option value="THEATRE">Театр</option>
+                                        <option value="CINEMA">Кино</option>
+                                        <option value="MARATHON">Марафон</option>
+                                        <option value="SEMINAR">Семинар</option>
+                                    </select>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="status" class="form-label">Статус <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="status" th:field="*{status}" required>
+                                        <option value="">Выберите статус</option>
+                                        <option value="ACTIVE">Активная</option>
+                                        <option value="INACTIVE">Неактивная</option>
+                                        <option value="CANCELLED">Отменена</option>
+                                    </select>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="street" class="form-label">Улица</label>
+                                    <input type="text" class="form-control" id="street" th:field="*{address.street}">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="city" class="form-label">Город</label>
+                                    <input type="text" class="form-control" id="city" th:field="*{address.city}">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="country" class="form-label">Страна</label>
+                                    <input type="text" class="form-control" id="country" th:field="*{address.country}">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="phone" class="form-label">Телефон</label>
+                                    <input type="text" class="form-control" id="phone" th:field="*{phone}">
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <a href="/admin/afisha" class="btn btn-secondary">
+                                    <i class="fas fa-times me-2"></i>Отмена
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i>
+                                    <span th:text="${afisha.id != null ? 'Сохранить изменения' : 'Создать афишу'}">Сохранить</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-info-circle me-2"></i>Справка
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <h6>Обязательные поля</h6>
+                        <ul class="list-unstyled small text-muted">
+                            <li><i class="fas fa-check text-success me-1"></i>Название</li>
+                            <li><i class="fas fa-check text-success me-1"></i>Описание</li>
+                            <li><i class="fas fa-check text-success me-1"></i>Дата и время</li>
+                            <li><i class="fas fa-check text-success me-1"></i>Место проведения</li>
+                            <li><i class="fas fa-check text-success me-1"></i>Категория</li>
+                            <li><i class="fas fa-check text-success me-1"></i>Статус</li>
+                        </ul>
+                        
+                        <h6 class="mt-3">Рекомендации</h6>
+                        <ul class="list-unstyled small text-muted">
+                            <li><i class="fas fa-lightbulb text-warning me-1"></i>Укажите точную дату и время</li>
+                            <li><i class="fas fa-lightbulb text-warning me-1"></i>Добавьте подробное описание</li>
+                            <li><i class="fas fa-lightbulb text-warning me-1"></i>Укажите адрес для удобства</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="/js/main.js"></script>
+</body>
+</html>

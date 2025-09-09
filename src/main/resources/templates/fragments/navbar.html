@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar Fragment</title>
+</head>
+<body>
+    <!-- Navigation Fragment -->
+    <nav class="navbar navbar-expand-lg navbar-dark" th:fragment="navbar">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">
+                <i class="fas fa-calendar-alt"></i>
+                Qydyr Entity
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Основная навигация - видна всем -->
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}" th:classappend="${#request.requestURI == '/' ? 'active' : ''}">
+                            <i class="fas fa-home"></i>
+                            <span>Главная</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/events}" th:classappend="${#strings.startsWith(#request.requestURI, '/events') ? 'active' : ''}">
+                            <i class="fas fa-calendar"></i>
+                            <span>Афиши</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/venues}" th:classappend="${#strings.startsWith(#request.requestURI, '/venues') ? 'active' : ''}">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Места</span>
+                        </a>
+                    </li>
+                    <!-- Избранное только для авторизованных -->
+                    <li class="nav-item" th:if="${user != null}">
+                        <a class="nav-link" th:href="@{/favourites}" th:classappend="${#strings.startsWith(#request.requestURI, '/favourites') ? 'active' : ''}">
+                            <i class="fas fa-heart"></i>
+                            <span>Избранное</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                
+                <!-- Правая часть навигации -->
+                <div class="d-flex align-items-center" th:if="${user != null}">
+                    <!-- Информация о пользователе -->
+                    <span class="navbar-text me-3">
+                        <i class="fas fa-user"></i>
+                        <span th:text="${user.firstName + ' ' + user.lastName}">Пользователь</span>
+                    </span>
+                    
+                    <!-- Кнопки действий -->
+                    <div class="btn-group me-2" role="group">
+                        <a class="btn btn-outline-light btn-sm" th:href="@{/profile}" title="Профиль">
+                            <i class="fas fa-user-circle"></i>
+                            <span class="d-none d-md-inline ms-1">Профиль</span>
+                        </a>
+                        <a class="btn btn-outline-light btn-sm" th:href="@{/orders}" title="Мои билеты">
+                            <i class="fas fa-ticket-alt"></i>
+                            <span class="d-none d-md-inline ms-1">Билеты</span>
+                        </a>
+                    </div>
+                    
+                    <!-- Кнопка выхода -->
+                    <form th:action="@{/logout}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-outline-danger btn-sm" title="Выйти">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span class="d-none d-md-inline ms-1">Выйти</span>
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Кнопки для неавторизованных пользователей -->
+                <div class="d-flex align-items-center" th:if="${user == null}">
+                    <a class="btn btn-outline-light btn-sm me-2" th:href="@{/login}">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Войти</span>
+                    </a>
+                    <a class="btn btn-light btn-sm" th:href="@{/register}">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Регистрация</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</body>
+</html>

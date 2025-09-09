@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: qydyr
+      MYSQL_PASSWORD: root
+    volumes:
+      - ./data:/var/lib/mysql
+    ports:
+      - "3306:3306"

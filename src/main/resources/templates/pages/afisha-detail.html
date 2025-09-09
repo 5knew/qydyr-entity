@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${afisha.name} + ' - Qydyr Entity'">Детали события - Qydyr Entity</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 0;
+        }
+        
+        .event-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .event-info-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: -50px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .price-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: inline-block;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .purchase-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .btn-purchase {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            color: white;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-purchase:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+        
+        .btn-login {
+            background: #6c757d;
+            border: none;
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            color: white;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-login:hover {
+            background: #5a6268;
+            transform: translateY(-3px);
+            color: white;
+        }
+        
+        .category-badge {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+        
+        .status-badge {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+        
+        .description-text {
+            line-height: 1.8;
+            font-size: 1.1rem;
+            color: #555;
+        }
+        
+        .back-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <a href="/events" class="back-button">
+                <i class="fas fa-arrow-left me-2"></i>Назад к афишам
+            </a>
+            
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <div class="d-flex align-items-center mb-3">
+                        <span class="category-badge me-3" th:text="${afisha.category}">CONCERT</span>
+                        <span class="status-badge" th:text="${afisha.status}">ACTIVE</span>
+                    </div>
+                    <h1 class="display-4 fw-bold mb-4" th:text="${afisha.name}">Название события</h1>
+                    <p class="lead mb-4" th:text="${afisha.description}">Описание события</p>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <div class="price-badge">
+                        <i class="fas fa-ticket-alt me-2"></i>
+                        <span th:text="${afisha.price}">5000</span> ₸
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <div class="row">
+            <!-- Event Image -->
+            <div class="col-lg-6 mb-4">
+                <div class="text-center">
+                    <img th:if="${afisha.image != null}" 
+                         th:src="@{'/api/images/' + ${afisha.image.id}}" 
+                         class="event-image" 
+                         alt="Изображение события">
+                    <div th:if="${afisha.image == null}" 
+                         class="event-image d-flex align-items-center justify-content-center bg-light">
+                        <i class="fas fa-calendar-alt" style="font-size: 4rem; color: #ccc;"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Event Details -->
+            <div class="col-lg-6">
+                <div class="event-info-card">
+                    <h3 class="mb-4">
+                        <i class="fas fa-info-circle me-2"></i>Информация о событии
+                    </h3>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                        <div>
+                            <strong>Дата и время:</strong><br>
+                            <span th:text="${#temporals.format(afisha.eventDateTimeFrom, 'dd MMMM yyyy, HH:mm')}">25 декабря 2024, 19:00</span> - 
+                            <span th:text="${#temporals.format(afisha.eventDateTimeTo, 'HH:mm')}">22:00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <strong>Место проведения:</strong><br>
+                            <span th:text="${afisha.addressName}">Дворец Республики</span><br>
+                            <span th:text="${afisha.address.street + ', ' + afisha.address.city + ', ' + afisha.address.country}">ул. Абая 150, Алматы, Казахстан</span>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item" th:if="${afisha.phone != null}">
+                        <div class="info-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <strong>Телефон:</strong><br>
+                            <span th:text="${afisha.phone}">+7 (727) 250-12-34</span>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item" th:if="${afisha.addressLink != null}">
+                        <div class="info-icon">
+                            <i class="fas fa-external-link-alt"></i>
+                        </div>
+                        <div>
+                            <strong>Ссылка на карту:</strong><br>
+                            <a th:href="${afisha.addressLink}" target="_blank" class="text-decoration-none">
+                                <i class="fas fa-map-marked-alt me-1"></i>Открыть на карте
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Description Section -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="event-info-card">
+                    <h3 class="mb-4">
+                        <i class="fas fa-align-left me-2"></i>Описание события
+                    </h3>
+                    <p class="description-text" th:text="${afisha.description}">Подробное описание события</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Purchase Section -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="purchase-section">
+                    <h3 class="mb-4">
+                        <i class="fas fa-shopping-cart me-2"></i>Покупка билетов
+                    </h3>
+                    
+                    <div th:if="${user != null and afisha.status.name() == 'ACTIVE'}">
+                        <!-- Форма покупки билетов -->
+                        <form th:action="@{'/purchase/' + ${afisha.id}}" method="post" class="purchase-form">
+                            <div class="row align-items-center justify-content-center mb-4">
+                                <div class="col-md-6">
+                                    <div class="card border-0 shadow-sm">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <i class="fas fa-ticket-alt me-2 text-primary"></i>
+                                                Выберите количество билетов
+                                            </h5>
+                                            
+                                            <div class="mb-3">
+                                                <label for="quantity" class="form-label">Количество билетов:</label>
+                                                <select name="quantity" id="quantity" class="form-select" onchange="updateTotalPrice()">
+                                                    <option value="1">1 билет</option>
+                                                    <option value="2">2 билета</option>
+                                                    <option value="3">3 билета</option>
+                                                    <option value="4">4 билета</option>
+                                                    <option value="5">5 билетов</option>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p class="mb-1"><strong>Цена за билет:</strong></p>
+                                                    <p class="h5 text-primary" th:text="${afisha.price + ' ₸'}">5000 ₸</p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <p class="mb-1"><strong>Общая стоимость:</strong></p>
+                                                    <p class="h4 text-success" id="totalPrice" th:text="${afisha.price + ' ₸'}">5000 ₸</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <hr>
+                                            
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <span><strong>Ваш баланс:</strong></span>
+                                                <span class="h6" th:text="${user.cash != null ? user.cash + ' ₸' : '0 ₸'}">0 ₸</span>
+                                            </div>
+                                            
+                                            <button type="submit" class="btn btn-success btn-lg w-100" 
+                                                    th:onclick="return confirmPurchase(${user.cash != null ? user.cash : 0})">
+                                                <i class="fas fa-credit-card me-2"></i>Купить билеты
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <p class="text-center text-muted">
+                                <i class="fas fa-shield-alt me-1"></i>
+                                Безопасная оплата • Мгновенное подтверждение • Электронные билеты
+                            </p>
+                        </form>
+                    </div>
+                    
+                    <div th:if="${user != null and afisha.status != 'ACTIVE'}">
+                        <div class="alert alert-warning text-center">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            Билеты на это событие недоступны для покупки.
+                        </div>
+                    </div>
+                    
+                    <div th:if="${user == null}">
+                        <p class="lead mb-4">Для покупки билетов необходимо войти в систему</p>
+                        <a th:href="@{/login}" class="btn-login me-3">
+                            <i class="fas fa-sign-in-alt me-2"></i>Войти
+                        </a>
+                        <a th:href="@{/register}" class="btn-purchase">
+                            <i class="fas fa-user-plus me-2"></i>Зарегистрироваться
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-calendar-alt me-2"></i>Qydyr Entity</h5>
+                    <p class="mb-0">Система управления событиями и местами проведения мероприятий</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">&copy; 2024 Qydyr Entity. Все права защищены.</p>
+                    <div class="mt-2">
+                        <a href="#" class="text-light me-3"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script th:src="@{/js/main.js}"></script>
+    
+    <script>
+        // Получаем цену за билет из Thymeleaf
+        const ticketPrice = /*[[${afisha.price}]]*/ 5000;
+        const userBalance = /*[[${user != null && user.cash != null ? user.cash : 0}]]*/ 0;
+        
+        function updateTotalPrice() {
+            const quantity = document.getElementById('quantity').value;
+            const totalPrice = ticketPrice * quantity;
+            document.getElementById('totalPrice').textContent = totalPrice + ' ₸';
+        }
+        
+        function confirmPurchase(balance) {
+            const quantity = document.getElementById('quantity').value;
+            const totalCost = ticketPrice * quantity;
+            
+            if (parseFloat(balance) < totalCost) {
+                alert('Недостаточно средств на балансе!\n\n' +
+                      'Необходимо: ' + totalCost + ' ₸\n' +
+                      'Доступно: ' + balance + ' ₸\n\n' +
+                      'Пополните баланс для продолжения покупки.');
+                return false;
+            }
+            
+            const confirmMessage = 'Подтвердите покупку билетов:\n\n' +
+                                 'Количество: ' + quantity + ' билет(ов)\n' +
+                                 'Цена за билет: ' + ticketPrice + ' ₸\n' +
+                                 'Общая стоимость: ' + totalCost + ' ₸\n' +
+                                 'Остаток после покупки: ' + (parseFloat(balance) - totalCost) + ' ₸\n\n' +
+                                 'Продолжить покупку?';
+            
+            return confirm(confirmMessage);
+        }
+        
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTotalPrice();
+        });
+    </script>
+</body>
+</html>
