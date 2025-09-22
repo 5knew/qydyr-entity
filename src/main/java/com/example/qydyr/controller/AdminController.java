@@ -7,6 +7,7 @@ import com.example.qydyr.service.AfishaService;
 import com.example.qydyr.service.PlaceService;
 import com.example.qydyr.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,13 +15,21 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+
+    @Value("${upload.path}")
+    private String uploadPathProperty;
 
     @Autowired
     private AfishaService afishaService;
@@ -91,15 +100,61 @@ public class AdminController {
     }
 
     @PostMapping("/afisha/save")
-    public String saveAfisha(@ModelAttribute Afisha afisha, RedirectAttributes redirectAttributes) {
-        try {
-            afishaService.saveAfisha(afisha);
-            redirectAttributes.addFlashAttribute("successMessage", "Афиша успешно сохранена!");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Ошибка при сохранении афиши: " + e.getMessage());
+public String saveAfisha(
+        @ModelAttribute Afisha afisha,
+        @RequestParam("imageFile") MultipartFile imageFile,
+        RedirectAttributes redirectAttributes) {
+    try {
+        System.out.println("=== DEBUG: AdminController saveAfisha ===");
+        System.out.println("Afisha name: " + afisha.getName());
+        System.out.println("Image file: " + (imageFile != null ? imageFile.getOriginalFilename() : "null"));
+        System.out.println("Image file empty: " + (imageFile != null ? imageFile.isEmpty() : "null"));
+        System.out.println("Upload path property: " + uploadPathProperty);
+        
+        if (imageFile != null && !imageFile.isEmpty()) {
+            // Сохраняем файл в папку uploads/afisha
+            // Извлекаем расширение файла
+            String originalFilename = imageFile.getOriginalFilename();
+            String fileExtension = "";
+            if (originalFilename != null && originalFilename.contains(".")) {
+                fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            }
+            // Генерируем безопасное имя файла только с UUID и расширением
+            String fileName = UUID.randomUUID().toString() + fileExtension;
+            System.out.println("Original filename: " + originalFilename);
+            System.out.println("Generated filename: " + fileName);
+            
+            Path uploadPath = Paths.get(uploadPathProperty + "/afisha");
+            System.out.println("Upload path: " + uploadPath.toString());
+            System.out.println("Upload path exists: " + Files.exists(uploadPath));
+            
+            if (!Files.exists(uploadPath)) {
+                System.out.println("Creating upload directory: " + uploadPath);
+                Files.createDirectories(uploadPath);
+            }
+            
+            Path filePath = uploadPath.resolve(fileName);
+            System.out.println("Full file path: " + filePath.toString());
+            
+            Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("File saved successfully");
+
+            // Сохраняем путь к файлу в сущность
+            String imagePath = "/uploads/afisha/" + fileName;
+            afisha.setImagePath(imagePath);
+            System.out.println("Image path set to: " + imagePath);
+        } else {
+            System.out.println("No image file provided or file is empty");
         }
-        return "redirect:/admin/afisha";
+
+        afishaService.saveAfisha(afisha);
+        redirectAttributes.addFlashAttribute("successMessage", "Афиша успешно сохранена!");
+    } catch (Exception e) {
+        redirectAttributes.addFlashAttribute("errorMessage", "Ошибка при сохранении афиши: " + e.getMessage());
     }
+    return "redirect:/admin/afisha";
+}
+
 
     @PostMapping("/afisha/delete/{id}")
     public String deleteAfisha(@PathVariable Long id, RedirectAttributes redirectAttributes) {

@@ -58,6 +58,17 @@ public class WebController {
         // Получаем последние 6 афиш
         Pageable pageable = PageRequest.of(0, 6);
         Page<Afisha> recentAfisha = afishaService.getAllAfisha(pageable);
+        
+        // DEBUG: Логируем информацию о последних афишах и их изображениях
+        System.out.println("=== DEBUG: WebController index ===");
+        System.out.println("Recent afisha count: " + recentAfisha.getContent().size());
+        
+        for (Afisha afisha : recentAfisha.getContent()) {
+            System.out.println("Recent Afisha ID: " + afisha.getId() + 
+                             ", Name: " + afisha.getName() + 
+                             ", ImagePath: " + afisha.getImagePath());
+        }
+        
         model.addAttribute("recentAfisha", recentAfisha.getContent());
         
         return "pages/index";
@@ -132,6 +143,17 @@ public class WebController {
             afishaPage = afishaService.getAllAfisha(pageable);
         }
         
+        // DEBUG: Логируем информацию об афишах и их изображениях
+        System.out.println("=== DEBUG: WebController afishaPage ===");
+        System.out.println("Total afisha count: " + afishaPage.getTotalElements());
+        System.out.println("Current page afisha count: " + afishaPage.getContent().size());
+        
+        for (Afisha afisha : afishaPage.getContent()) {
+            System.out.println("Afisha ID: " + afisha.getId() + 
+                             ", Name: " + afisha.getName() + 
+                             ", ImagePath: " + afisha.getImagePath());
+        }
+        
         model.addAttribute("afishaPage", afishaPage);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", afishaPage.getTotalPages());
@@ -149,6 +171,14 @@ public class WebController {
             if (afisha == null) {
                 return "redirect:/events?error=notfound";
             }
+            
+            // DEBUG: Логируем информацию об афише и её изображении
+            System.out.println("=== DEBUG: WebController afishaDetailPage ===");
+            System.out.println("Afisha ID: " + afisha.getId());
+            System.out.println("Afisha Name: " + afisha.getName());
+            System.out.println("Afisha ImagePath: " + afisha.getImagePath());
+            System.out.println("ImagePath is null: " + (afisha.getImagePath() == null));
+            System.out.println("ImagePath is empty: " + (afisha.getImagePath() != null && afisha.getImagePath().isEmpty()));
             
             model.addAttribute("afisha", afisha);
             

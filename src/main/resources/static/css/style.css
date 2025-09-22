@@ -1267,6 +1267,197 @@ footer {
 }
 
 /* Reduced Motion */
+/* Стили для улучшенных карточек афиш */
+.afisha-card {
+    transition: all 0.3s ease;
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.afisha-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.afisha-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+}
+
+.afisha-card:hover .afisha-image {
+    transform: scale(1.05);
+}
+
+/* Стили для наклеек */
+.afisha-card .badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.afisha-card .badge.bg-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.afisha-card .badge.bg-success {
+    background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%) !important;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.afisha-card .badge.bg-danger {
+    background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%) !important;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.afisha-card .badge.bg-secondary {
+    background: linear-gradient(135deg, #6c757d 0%, #adb5bd 100%) !important;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* Стили для кнопки избранного */
+.favorite-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.3);
+    transition: all 0.3s ease;
+}
+
+.favorite-btn:hover {
+    background: rgba(255,255,255,0.9) !important;
+    transform: scale(1.1);
+}
+
+.favorite-btn.active {
+    background: #ff6b6b !important;
+    color: white !important;
+    border-color: #ff6b6b;
+}
+
+/* Стили для текста карточек */
+.afisha-card .card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2c3e50;
+    line-height: 1.3;
+}
+
+.afisha-card .card-text {
+    font-size: 0.9rem;
+    color: #6c757d;
+    line-height: 1.4;
+}
+
+.afisha-card .list-unstyled li {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.afisha-card .list-unstyled li i {
+    width: 16px;
+    text-align: center;
+}
+
+/* Стили для цены */
+.afisha-card .text-success {
+    font-size: 1.25rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Стили для кнопок */
+.afisha-card .btn {
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.afisha-card .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.afisha-card .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.afisha-card .btn-success {
+    background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+    border: none;
+    box-shadow: 0 4px 15px rgba(86, 171, 47, 0.3);
+}
+
+.afisha-card .btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(86, 171, 47, 0.4);
+}
+
+/* Адаптивные размеры с соотношением 9:16 (вертикальное) */
+.afisha-card .card-img-top {
+    aspect-ratio: 9/16 !important;
+    width: 100% !important;
+    min-height: 150px !important;
+}
+
+/* Убираем ограничения ширины для 4 карточек в ряд */
+.afisha-card {
+    width: 100% !important;
+}
+
+@media (max-width: 768px) {
+    .afisha-card .card-body {
+        padding: 1rem !important;
+    }
+    
+    .afisha-card .card-footer {
+        padding: 1rem !important;
+    }
+}
+
+/* Анимации загрузки */
+.afisha-card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Стили для placeholder изображений */
+.afisha-card .bg-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.afisha-card .bg-gradient-secondary {
+    background: linear-gradient(135deg, #6c757d 0%, #adb5bd 100%);
+}
+
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,

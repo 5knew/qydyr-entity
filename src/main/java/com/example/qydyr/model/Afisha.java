@@ -41,8 +41,7 @@ public class Afisha implements Serializable{
     private String phone;
     @Column(name = "description")
     private String  description;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "place")
-    private Image image;
+    private String imagePath; // <-- поле для картинки
     @Column(name = "price")
     private Integer price;
     @Embedded

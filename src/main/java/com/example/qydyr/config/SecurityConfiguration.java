@@ -60,7 +60,7 @@ public class SecurityConfiguration {
                 .antMatchers("/v3/api-docs/**").permitAll()
                 .antMatchers("/", "/login", "/register", "/logout", "/events", "/events/**", "/venues", "/events/new", "/venues/new").permitAll()
                 .antMatchers("/favourites", "/profile", "/orders").authenticated()
-                .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                .antMatchers("/css/**", "/js/**", "/images/**", "/uploads/**").permitAll()
                 .antMatchers("/admin/login").permitAll()
                 .antMatchers("/admin/**").permitAll()
                 .anyRequest()
